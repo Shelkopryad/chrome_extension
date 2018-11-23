@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<style>
+		.cellInput {
+			height: 2em;
+			width: 4em;
+		}
+		
+		#request_btn {
+			margin-top: 10px;
+			margin-left: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<th>URL</th>
+			<th>Name</th>
+			<th>Phone</th>
+			<th>Email</th>
+		</tr>
+		<tr>
+			<td><input id="url" class="cellInput" type="text" /></td>
+			<td><input id="name" class="cellInput" type="text" /></td>
+			<td><input id="phone" class="cellInput" type="text" /></td>
+			<td><input id="email" class="cellInput" type="text" /></td>
+		</tr>
+	</table>
+	<form>
+		<div class="form-group">
+			<input id="file_chooser" class="form-control-file" type="file" />
+			<button id="request_btn" type="button" class="btn btn-success">Save</button>
+      <div id="status"></div>
+		</div>
+	</form>
+
+	<script src="remover.js"></script>
+</body>
+
+</html>
