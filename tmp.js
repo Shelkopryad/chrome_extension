@@ -1,20 +1,22 @@
-request_btn.onclick = function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.executeScript(tabs[0].id,  {code: 'var num = window.location.href.match(\'\\\\d+\')[0];const http_req = new JSONHttpRequest();var address = \'https://pub.fsa.gov.ru/api/v1/rds/common/declarations/\'+num;var token = "Bearer " + window.localStorage[\'fgis_token\'];http_req.open("GET", address);http_req.setRequestHeader("Authorization", token);http_req.send();http_req.onreadystatechange = (e) => { if (http_req.readyState == 4 && http_req.status == 200) { var json_response = http_req.response;console.log(json_response[\'applicant\'][\'ogrnAssignDate\']); } }'});
-    });
-};
+var file;
+var oFile;
+var rABS = true;
 
-var num = window.location.href.match('\\d+')[0];
-http_req = new XMLHttpRequest();
-var address = 'https://pub.fsa.gov.ru/api/v1/rds/common/declarations/'+num;
-var token = "Bearer " + window.localStorage['fgis_token'];
-http_req.open("GET", address);
-http_req.setRequestHeader("Authorization", token);
-http_req.send();
-http_req.onreadystatechange = (e) => { 
-    if (http_req.readyState === 4) { 
-        var json_response = JSON.parse(http_req.responseText);
-        console.log(json_response['applicant']['ogrnAssignDate']);
-        document.getElementById('status').innerHTML = "Success";
-    }; 
-};
+function handleFileSelect(evt) {
+    file = evt.target.files[0];
+    console.log(file);
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+        var data = evt.target.result;
+        if (!rABS) data = new Uint8Array(data);
+        var workbook = XLSX.read(data, { type: rABS ? 'binary' : 'array' });
+        var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        XLSX.utils.sheet_add_aoa(worksheet, [
+            ["new data", 1, 2, 3]
+        ], { origin: -1});
+        /* DO SOMETHING WITH workbook HERE */
+    };
+    if (rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
+}
+
+document.getElementById('file_chooser').addEventListener('change', handleFileSelect, false);

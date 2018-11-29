@@ -34,4 +34,9 @@ request_btn.onclick = function() {
     });
 };
 
+function handleFileSelect(evt) {
+    var file = evt.target.files;
+    console.log(file)
+}
 
+document.getElementById('file_chooser').addEventListener('change', handleFileSelect, false);
