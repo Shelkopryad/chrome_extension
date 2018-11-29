@@ -1,44 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html style="width: 550px;">
 
 <head>
 	<link rel="stylesheet" href="bootstrap.min.css">
-	<style>
-		.cellInput {
-			height: 2em;
-			width: 4em;
-		}
-		
-		#request_btn {
-			margin-top: 10px;
-			margin-left: 5px;
-		}
-	</style>
 </head>
 
 <body>
-	<table>
-		<tr>
-			<th>URL</th>
-			<th>Name</th>
-			<th>Phone</th>
-			<th>Email</th>
-		</tr>
-		<tr>
-			<td><input id="url" class="cellInput" type="text" /></td>
-			<td><input id="name" class="cellInput" type="text" /></td>
-			<td><input id="phone" class="cellInput" type="text" /></td>
-			<td><input id="email" class="cellInput" type="text" /></td>
-		</tr>
-	</table>
-	<form>
-		<div class="form-group">
-			<input id="file_chooser" class="form-control-file" type="file" />
-			<button id="request_btn" type="button" class="btn btn-success">Save</button>
-      <div id="status"></div>
+	<div class="container">
+		<form>
+			<div class="form-group">
+				<input id="file_chooser" class="form-control-file" type="file" />
+				<button id="request_btn" type="button" class="btn btn-success" onclick="setSuccess()">Save</button>
+			</div>
+		</form>
+		<div>
+			<p>URL: <span id="url"></span></p>
+			<p>Name: <span id="name"></span></p>
+			<p>Phone: <span id="phone"></span></p>
+			<p>Email: <span id="email"></span></p>
 		</div>
-	</form>
+	</div>
 
+	<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 	<script src="remover.js"></script>
 </body>
 
