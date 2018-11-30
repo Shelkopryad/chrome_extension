@@ -1,16 +1,24 @@
 var request_btn = document.getElementById('request_btn');
+var save_btn = document.getElementById('save_btn');
 var url_cell = document.getElementById('url');
 var name_cell = document.getElementById('name');
 var phone_cell = document.getElementById('phone');
 var email_cell = document.getElementById('email');
 var url_value, name_value, phone_value, email_value;
 var http_req;
+var file;
 
 chrome.runtime.onMessage.addListener(function(request) {
     url_cell.innerHTML = request['url_value'];
     name_cell.innerHTML = request['name_value'];
     phone_cell.innerHTML = request['phone_value'];
     email_cell.innerHTML = request['email_value'];
+
+    if (!file) {
+        console.log("Alert");
+        return;
+    }
+    console.log(file);
 });
 
 request_btn.onclick = function() {
@@ -35,8 +43,7 @@ request_btn.onclick = function() {
 };
 
 function handleFileSelect(evt) {
-    var file = evt.target.files;
-    console.log(file)
+    file = evt.target.files[0];
 }
 
 document.getElementById('file_chooser').addEventListener('change', handleFileSelect, false);

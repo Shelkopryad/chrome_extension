@@ -1,5 +1,4 @@
-var file;
-var oFile;
+var save_btn = document.getElementById('save_btn');
 var workbook;
 
 function handleFileSelect(evt) {
@@ -8,7 +7,6 @@ function handleFileSelect(evt) {
     var f = files[0];
     var reader = new FileReader();
     reader.onload = function (evt) {
-        if (typeof console !== 'undefined') console.log("onload", new Date(), rABS);
         var data = evt.target.result;
         if (!rABS) data = new Uint8Array(data);
         workbook = XLSX.read(data, { type: rABS ? 'binary' : 'array' });
@@ -18,8 +16,6 @@ function handleFileSelect(evt) {
 }
 
 document.getElementById('file_chooser').addEventListener('change', handleFileSelect, false);
-
-var save_btn = document.getElementById('save_btn');
 
 save_btn.onclick = function () {
     console.log(workbook.SheetNames[0]);
@@ -31,9 +27,10 @@ save_btn.onclick = function () {
     var desired_cell = worksheet['A1'];
     console.log(desired_cell.v);
 
-    // var ws_data = [["", "Hello", "", "", "World", "", "", "", "All"]];
+    var ws_data = [["", "Hello", "", "", "World", "", "", "", "All"]];
+    XLSX.utils.sheet_add_aoa(worksheet, ws_data, { origin: -1 });
 
-    // XLSX.utils.sheet_add_aoa(worksheet, ws_data, { origin: -1 });
+    console.log(worksheet);
 
     // // var ws = XLSX.utils.aoa_to_sheet(ws_data);;
 
