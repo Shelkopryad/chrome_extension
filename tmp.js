@@ -1,11 +1,7 @@
+var request_btn = document.getElementById('request_btn');
 var save_btn = document.getElementById('save_btn');
-var get_file_chooser = document.getElementById('get_file_chooser');
 var file;
 var workbook;
-
-get_file_chooser.onclick = function() {
-    document.getElementById('file_chooser').click();
-}
 
 function handleFileSelect(evt) {
     var files = evt.target.files;
@@ -23,32 +19,26 @@ function handleFileSelect(evt) {
     get_file_chooser.innerHTML = file.name + " ... choose new file";
 }
 
-document.getElementById('file_chooser').addEventListener('change', handleFileSelect, false);
+request_btn.onclick = function() {
+    var arr = JSON.parse(localStorage.getItem("fgis_info")) || {};
+    arr[new Date().getTime()] = { 1: Math.random() * 10000, 2: Math.random() * 10000, 3: Math.random() * 10000 };
+    localStorage.setItem("fgis_info", JSON.stringify(arr));
+}
 
 save_btn.onclick = function () {
-    console.log(file.webkitRelativePath);
+    var wb = XLSX.utils.book_new();
+    var new_ws_name = "SheetJS";
+    var ws_data = [];
+    
+    var arr = JSON.parse(localStorage.getItem("fgis_info")) || {};
+    for (var key in arr) {
+        ws_data.push([arr[key][1], "", "", arr[key][2], "", arr[key][3]])
+        console.log(key + ": " + " { 1: " + arr[key][1] + ", 2: " + arr[key][2] + ", 3: " + arr[key][3] + " }")
+    }
 
-    // console.log(workbook.SheetNames[0]);
-    // console.log(workbook.SheetNames[1]);
-    // console.log(workbook.SheetNames[2]);
+    var ws = XLSX.utils.aoa_to_sheet(ws_data);
 
-    // var worksheet = workbook.Sheets["Sheet1"];
-    // console.log(worksheet);
-    // var desired_cell = worksheet['A1'];
-    // console.log(desired_cell.v);
+    XLSX.utils.book_append_sheet(wb, ws, new_ws_name);
 
-    // var ws_data = [["", "Hello", "", "", "World", "", "", "", "All"]];
-    // XLSX.utils.sheet_add_aoa(worksheet, ws_data, { origin: -1 });
-
-    // console.log(worksheet);
-
-    // // var ws = XLSX.utils.aoa_to_sheet(ws_data);;
-
-    // console.log(worksheet);
-
-
-
-    // // XLSX.utils.book_append_sheet(workbook, ws, "Sheet1");
-
-    // console.log(workbook);
+    XLSX.writeFile(wb, 'out.xlsx');
 }

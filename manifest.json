@@ -2,11 +2,23 @@
     "name": "ExcelWriter",
     "version": "1.0",
     "description": "Save info from rest request to excel",
-    "permissions": ["activeTab", "declarativeContent", "storage"],
+    "permissions": [
+        "activeTab",
+        "declarativeContent",
+        "storage"
+    ],
     "background": {
-        "scripts": ["background.js"],
+        "scripts": [
+            "background.js"
+        ],
         "persistent": false
     },
+    "content_scripts": [
+        {
+            "matches": ["https://pub.fsa.gov.ru/*"],
+            "js": ["xlsx.full.min.js"]
+        }
+    ],
     "page_action": {
         "default_popup": "popup.html",
         "default_icon": {

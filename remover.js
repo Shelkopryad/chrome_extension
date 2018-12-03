@@ -4,26 +4,19 @@ var url_cell = document.getElementById('url');
 var name_cell = document.getElementById('name');
 var phone_cell = document.getElementById('phone');
 var email_cell = document.getElementById('email');
-var url_value, name_value, phone_value, email_value;
+var message, data;
 var http_req;
-var file;
 
 chrome.runtime.onMessage.addListener(function(request) {
     url_cell.innerHTML = request['url_value'];
     name_cell.innerHTML = request['name_value'];
     phone_cell.innerHTML = request['phone_value'];
     email_cell.innerHTML = request['email_value'];
-
-    if (!file) {
-        console.log("Alert");
-        return;
-    }
-    console.log(file);
 });
 
 request_btn.onclick = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.executeScript(tabs[0].id,  {code: 
+        chrome.tabs.executeScript(tabs[0].id,  { code: 
             'var num = window.location.href.match(\'\\\\d+\')[0];' + 
             'http_req = new XMLHttpRequest();' + 
             'var address = \'https://pub.fsa.gov.ru/api/v1/rds/common/declarations/\' + num;' + 
@@ -34,16 +27,31 @@ request_btn.onclick = function() {
             'http_req.onreadystatechange = (e) => {' + 
                 'if (http_req.readyState === 4) {' + 
                     'var json_response = JSON.parse(http_req.responseText);' + 
-                    'chrome.runtime.sendMessage(\'oagfgjjomhalbpjephoongmhfnkocegi\', ' + 
-                        '{ \'url_value\': window.location.href, \'name_value\': json_response[\'applicant\'][\'shortName\'], \'phone_value\': json_response[\'applicant\'][\'contacts\'][1][\'value\'], \'email_value\': json_response[\'applicant\'][\'contacts\'][0][\'value\'] });' + 
+                    'message = { \'url_value\': window.location.href, \'name_value\': json_response[\'applicant\'][\'shortName\'], \'phone_value\': json_response[\'applicant\'][\'contacts\'][1][\'value\'], \'email_value\': json_response[\'applicant\'][\'contacts\'][0][\'value\'] };' + 
+                    'chrome.runtime.sendMessage(\'oagfgjjomhalbpjephoongmhfnkocegi\', message);' + 
+                    'data = JSON.parse(localStorage.getItem("fgis_info")) || {};' + 
+                    'data[new Date().getTime()] = message;' + 
+                    'localStorage.setItem("fgis_info", JSON.stringify(data))' + 
                 '};' + 
             '};'
         });
     });
 };
 
-function handleFileSelect(evt) {
-    file = evt.target.files[0];
+save_btn.onclick = function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.executeScript(tabs[0].id, { code: 
+            'data = JSON.parse(localStorage.getItem("fgis_info")) || {};' + 
+            'var workbook = XLSX.utils.book_new();' + 
+            'var ws_name = "Sheet";' + 
+            'var ws_data = [];' + 
+            'for (var key in data) {' + 
+                'ws_data.push(["", data[key][\'name_value\'], "", "", data[key][\'email_value\'], data[key][\'phone_value\'], "", "", data[key][\'url_value\']])' + 
+            '}' + 
+            'var worksheet = XLSX.utils.aoa_to_sheet(ws_data);' + 
+            'XLSX.utils.book_append_sheet(workbook, worksheet, ws_name);' + 
+            'XLSX.writeFile(workbook, \'out.xlsx\');' + 
+            'localStorage.clear();'
+        });
+    });
 }
-
-document.getElementById('file_chooser').addEventListener('change', handleFileSelect, false);
