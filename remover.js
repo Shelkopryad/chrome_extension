@@ -51,7 +51,7 @@ save_btn.onclick = function () {
             'var worksheet = XLSX.utils.aoa_to_sheet(ws_data);' + 
             'XLSX.utils.book_append_sheet(workbook, worksheet, ws_name);' + 
             'XLSX.writeFile(workbook, \'out.xlsx\');' + 
-            'localStorage.clear();'
+            'localStorage.removeItem("fgis_token");'
         });
     });
 }
