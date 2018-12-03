@@ -28,7 +28,7 @@ request_btn.onclick = function() {
                 'if (http_req.readyState === 4) {' + 
                     'var json_response = JSON.parse(http_req.responseText);' + 
                     'message = { \'url_value\': window.location.href, \'name_value\': json_response[\'applicant\'][\'shortName\'], \'phone_value\': json_response[\'applicant\'][\'contacts\'][1][\'value\'], \'email_value\': json_response[\'applicant\'][\'contacts\'][0][\'value\'] };' + 
-                    'chrome.runtime.sendMessage(\'oagfgjjomhalbpjephoongmhfnkocegi\', message);' + 
+                    'chrome.runtime.sendMessage(chrome.runtime.id, message);' + 
                     'data = JSON.parse(localStorage.getItem("fgis_info")) || {};' + 
                     'data[new Date().getTime()] = message;' + 
                     'localStorage.setItem("fgis_info", JSON.stringify(data))' + 
