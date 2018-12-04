@@ -1,0 +1,19 @@
+html {
+  width: 400px;
+}
+
+body {
+  display: flex;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+button {
+  border-radius: 5px;
+  display: inline-block;
+  width: 8em;
+  height: 2em;
+  cursor: pointer;
+  color: white;
+  background-color: #28a745;
+  border-color: #28a745;
+}
