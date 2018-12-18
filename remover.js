@@ -46,7 +46,7 @@ save_btn.onclick = function () {
             'var ws_name = "Sheet";' + 
             'var ws_data = [];' + 
             'for (var key in data) {' + 
-                'ws_data.push(["", data[key][\'name_value\'], "", "", data[key][\'email_value\'], data[key][\'phone_value\'], "", "", data[key][\'url_value\']])' + 
+                'ws_data.push(["", data[key][\'name_value\'], "", "", data[key][\'phone_value\'], data[key][\'email_value\'], "", "", data[key][\'url_value\']])' + 
             '}' + 
             'var worksheet = XLSX.utils.aoa_to_sheet(ws_data);' + 
             'XLSX.utils.book_append_sheet(workbook, worksheet, ws_name);' + 
