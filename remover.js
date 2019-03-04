@@ -27,7 +27,11 @@ request_btn.onclick = function() {
             'http_req.onreadystatechange = (e) => {' + 
                 'if (http_req.readyState === 4) {' + 
                     'var json_response = JSON.parse(http_req.responseText);' + 
-                    'message = { \'url_value\': window.location.href, \'name_value\': json_response[\'applicant\'][\'shortName\'], \'phone_value\': json_response[\'applicant\'][\'contacts\'][1][\'value\'], \'email_value\': json_response[\'applicant\'][\'contacts\'][0][\'value\'] };' + 
+                    'var url_value = window.location.href;' +
+                    'var name_value = json_response[\'applicant\'][\'shortName\'];' +
+                    'var phone_value = json_response[\'applicant\'][\'contacts\'][1] ? json_response[\'applicant\'][\'contacts\'][1][\'value\'] : "не представлен";' +
+                    'var email_value = json_response[\'applicant\'][\'contacts\'][0] ? json_response[\'applicant\'][\'contacts\'][0][\'value\'] : "не представлен";' +
+                    'message = { \'url_value\': url_value, \'name_value\': name_value, \'phone_value\': phone_value, \'email_value\': email_value };' +
                     'chrome.runtime.sendMessage(chrome.runtime.id, message);' + 
                     'data = JSON.parse(localStorage.getItem("fgis_info")) || {};' + 
                     'data[new Date().getTime()] = message;' + 
